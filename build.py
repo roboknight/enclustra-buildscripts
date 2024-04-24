@@ -311,7 +311,10 @@ def setup_output_dir(tgt, utl, odir):
 
 
 if args.version is True:
-    print(str("\n" + tool_version + "\n"))
+    if isinstance(tool_version,bytes):
+        print(str("\n" + tool_version.decode('utf-8') + "\n"))
+    else:
+        print(str("\n" + tool_version.decode + "\n"))
     sys.exit(0)
 
 elif args.clean_all is True:
