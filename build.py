@@ -96,9 +96,13 @@ parser = argparse.ArgumentParser(description=tool_name, prog='tool',
                                      prog,
                                      max_help_position=32))
 
+parser.add_argument("--binary-release", action='store',
+                    required=False, dest='bin_release', metavar='ver',
+                    help='specify release version of the binaries needed by buildscripts')
+
 parser.add_argument("--release", action='store',
                     required=False, dest='bs_release', metavar='ver',
-                    help='specify release version of the buidscripts')
+                    help='specify release version of the buildscripts')
 
 parser.add_argument("-L", "--list-devices", action='store_true',
                     required=False, dest='list_devices',
@@ -272,8 +276,15 @@ if args.bs_release:
 else:
     release = 'master'
 
+if args.bin_release:
+    b_release = args.bin_release
+    sys.argv.remove('--binary-release')
+    sys.argv.remove(args.bin_release)
+else:
+    b_release = 'v1.8'
+
 # add release to tool templates
-utils.add_tool_template("ebe_release", release)
+utils.add_tool_template("ebe_release", b_release)
 now = datetime.datetime.now()
 revision = utils.get_git_revision(bscripts_path).rstrip(b'\n')
 tool_version = bytes(tool_name,'utf-8') + b' (' + bytes(release,'utf-8') + b'-' + revision + b')\n'\

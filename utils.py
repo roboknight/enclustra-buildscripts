@@ -129,14 +129,15 @@ class Utils:
         try:
             proc = subprocess.Popen(call, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, shell=True)
-            for line in iter(proc.stdout.readline, ""):
+            for lline in iter(proc.stdout.readline, b''):
+                if isinstance(lline,bytes):
+                    line = lline.decode('utf-8')
+                else:
+                    line = lline
                 if self.quiet_mode is False:
                     sys.stdout.write(line)
                 if self.log_file is not None:
-                    if isinstance(line,bytes):
-                        self.log_file.write(line.decode('utf-8'))
-                    else:
-                        self.log_file.write(line)
+                    self.log_file.write(line)
                     self.log_file.flush()
             proc.wait()
             returncode = proc.returncode
