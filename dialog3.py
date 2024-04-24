@@ -293,8 +293,9 @@ def _dash_escape(args):
     res = []
 
     for arg in args:
-        if arg.startswith("--"):
-            res.extend(("--", arg))
+        print(arg)
+        if arg.startswith('--'):
+            res.extend(('--', arg))
         else:
             res.append(arg)
 

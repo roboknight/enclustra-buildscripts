@@ -497,7 +497,7 @@ def _to_onoff(val):
     """
     if isinstance(val, (bool, int)):
         return "on" if val else "off"
-    elif isinstance(val, basestring):
+    elif isinstance(val, str):
         try:
             if _on_cre.match(val):
                 return "on"
@@ -645,7 +645,7 @@ class DialogBackendVersion(BackendVersion):
         Please see the class docstring for details.
 
         """
-        if isinstance(dotted_part_or_str, basestring):
+        if isinstance(dotted_part_or_str, str):
             if rest:
                 raise BadPythonDialogUsage(
                     "non-empty 'rest' with 'dotted_part_or_str' as string: "
@@ -2063,7 +2063,7 @@ by :program:`dialog`.
                     "{2!r}".format(__name__, type(self).__name__, widget_name))
 
             for name, value in (("LABEL", label), ("ITEM", item)):
-                if not isinstance(value, basestring):
+                if not isinstance(value, str):
                     raise BadPythonDialogUsage(
                         "{0}.{1}.{2}: {3!r} element not a string: {4!r}".format(
                             __name__, type(self).__name__,

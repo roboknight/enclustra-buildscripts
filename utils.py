@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
@@ -20,6 +20,7 @@ import re
 import shlex
 import sys
 import signal
+import traceback
 
 
 class Utils:
@@ -103,11 +104,11 @@ class Utils:
             textcolor = ""
 
         if self.log_file is not None:
-            self.log_file.write(" ".join(str(i) for i in args) + '\n')
+            self.log_file.write(''.join([i.decode('utf-8') if isinstance(i,bytes) else i for i in args] ))
             self.log_file.flush()
 
-        print(textcolor + " ".join(str(i) for i in args) +
-              (self.bcolors.ENDC if self.nicecolors else ""))
+        print(textcolor + ''.join([i.decode('utf-8') if isinstance(i,bytes) else i for i in args]) +
+              (self.bcolors.ENDC if self.nicecolors else ''))
 
         if loglevel == self.logtype.ERROR:
             if self.break_on_error is True:
@@ -132,14 +133,18 @@ class Utils:
                 if self.quiet_mode is False:
                     sys.stdout.write(line)
                 if self.log_file is not None:
-                    self.log_file.write(line)
+                    if isinstance(line,bytes):
+                        self.log_file.write(line.decode('utf-8'))
+                    else:
+                        self.log_file.write(line)
                     self.log_file.flush()
             proc.wait()
             returncode = proc.returncode
         except Exception as ext:
+            print(traceback.format_exc())
             self.print_message(self.logtype.ERROR,
                                "Error while executing command '"+call+"':",
-                               str(ext.strerror))
+                               str(ext))
 
         return returncode
 

@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
@@ -275,13 +275,13 @@ else:
 # add release to tool templates
 utils.add_tool_template("ebe_release", release)
 now = datetime.datetime.now()
-revision = utils.get_git_revision(bscripts_path).rstrip('\n')
-tool_version = tool_name + " (" + release + "-" + revision + ")\n"\
-    "Running under Python version "\
-    + str(sys.version.split()[0]) + "."\
-    "\n\nCopyright (c) 2015-" + str(now.year) + \
-    " Enclustra GmbH, Switzerland." \
-    "\nAll rights reserved."
+revision = utils.get_git_revision(bscripts_path).rstrip(b'\n')
+tool_version = bytes(tool_name,'utf-8') + b' (' + bytes(release,'utf-8') + b'-' + revision + b')\n'\
+    b'Running under Python version '\
+    + bytes(sys.version.split()[0],'utf-8') + b'.'\
+    b'\n\nCopyright (c) 2015-' + bytes(str(now.year),'utf-8') + \
+    b' Enclustra GmbH, Switzerland.' \
+    b'\nAll rights reserved.'
 
 
 # define helper functions
@@ -605,9 +605,9 @@ except Exception as ex:
 
 
 # welcome msg
-welcome_msg = tool_version
+welcome_msg = tool_version.decode('utf-')
 # if log file is set this will be logged
-utils.print_message(utils.logtype.INFO, welcome_msg + "\n\n")
+utils.print_message(utils.logtype.INFO, welcome_msg + '\n\n')
 
 # Main loop
 g = None
